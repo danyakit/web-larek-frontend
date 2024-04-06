@@ -1,6 +1,6 @@
 import { ICatalogItem, ICardItem, IPaymentState, IContactsState, IOrder, FormErrors, IAppState} from '../types';
 import { Model } from './base/Model';
-import { IEvents } from './base/events';
+import { IEvents } from './base/Events';
 
 export class AppState implements IAppState {
 	catalog: ICatalogItem[];

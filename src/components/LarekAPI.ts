@@ -1,4 +1,4 @@
-import { Api, ApiListResponse, ApiPostMethods } from './base/api';
+import { Api, ApiListResponse, ApiPostMethods } from './base/Api';
 import {IOrder, IOrderResult, ICatalogItem, Url,} from "../types";
 
 export interface ILarekAPI {

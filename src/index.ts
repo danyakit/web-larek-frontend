@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import { EventEmitter } from './components/base/events';
+import { EventEmitter } from './components/base/Events';
 import { API_URL as items, CDN_URL as images } from './utils/constants';
 import { LarekAPI } from './components/LarekAPI';
 import { AppState } from './components/AppData';

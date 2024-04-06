@@ -1,6 +1,6 @@
 import { Component } from '../base/Component';
 import { ensureElement } from '../../utils/utils';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 import { IModalView, TModalData } from '../../types';
 
 export class Modal extends Component<TModalData> implements IModalView {
