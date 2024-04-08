@@ -1,6 +1,6 @@
-import { ensureElement } from '../../utils/utils';
-import { Component } from '../base/Component';
-import { ISuccessView, TSuccessActions, TSuccessForm } from '../../types';
+import { ensureElement } from '../utils/utils';
+import { Component } from './base/Component';
+import { ISuccessView, TSuccessActions, TSuccessForm } from '../types';
 
 export class Success extends Component<TSuccessForm> implements ISuccessView {
 	protected _close: HTMLElement;

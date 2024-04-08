@@ -104,9 +104,10 @@ export type TContactsForm = {
 	phone: string;
 };
 
-export type TContactsActions = {
-	onClick: () => void;
-};
+export interface TContactsActions {
+    onClick?: () => void;
+    onSubmit?: () => void; 
+}
 
 export interface IAppState {
 	cartItems: ICardItem[];

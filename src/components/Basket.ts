@@ -1,6 +1,6 @@
-import { Component } from '../base/Component';
-import { createElement, ensureElement } from '../../utils/utils';
-import { IShoppingCardView, TShopCardActions, TShoppingCard } from '../../types';
+import { Component } from './base/Component';
+import { createElement, ensureElement } from '../utils/utils';
+import { IShoppingCardView, TShopCardActions, TShoppingCard } from '../types';
 
 export class Basket
 	extends Component<TShoppingCard>
@@ -33,8 +33,7 @@ export class Basket
 	}
 
 	setOrderButton(value: number) {
-		if (value > 0) this.setDisabled(this._button, false);
-		else this.setDisabled(this._button, true);
+		this.setDisabled(this._button, !value);
 	}
 
 	set price(price: number) {
@@ -42,7 +41,13 @@ export class Basket
 	}
 
 	setOrderIndex() {
-		const orderedList = this.container.querySelectorAll('.basket__item-index');
-		orderedList.forEach((item, idx) => this.setText(item, idx + 1));
+		const cardElements = this.container.querySelectorAll('.basket__item');
+		cardElements.forEach((cardElement, idx) => {
+			const indexElement = cardElement.querySelector('.basket__item-index');
+			if (indexElement) {
+				this.setText(indexElement, idx + 1);
+			}
+		});
 	}
+	
 }

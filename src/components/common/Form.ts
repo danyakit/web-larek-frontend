@@ -37,8 +37,8 @@ export class Form<T> extends Component<TFormState> implements IFormView<T> {
 	}
 
 	set valid(value: boolean) {
-		this._submit.disabled = !value;
-	}
+        this.setDisabled(this._submit, !value); 
+    }
 
 	set errors(value: string) {
 		this.setText(this._errors, value);

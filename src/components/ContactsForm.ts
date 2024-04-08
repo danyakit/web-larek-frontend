@@ -1,8 +1,8 @@
-import { IContactsFormView, TContactsActions, TContactsForm } from '../../types';
-import { IEvents } from '../base/Events';
-import { Form } from './Form';
+import { IContactsFormView, TContactsActions, TContactsForm } from '../types';
+import { IEvents } from './base/Events';
+import { Form } from './common/Form';
 
-export class Tabs extends Form<TContactsForm> implements IContactsFormView {
+export class ContactsForm extends Form<TContactsForm> implements IContactsFormView {
 	protected _close: HTMLElement;
 
 	constructor(
@@ -12,9 +12,12 @@ export class Tabs extends Form<TContactsForm> implements IContactsFormView {
 	) {
 		super(container, events);
 
-		if (actions.onClick) {
-			this._submit.addEventListener('click', actions.onClick);
-		}
+		if (actions.onSubmit) {
+            this.container.addEventListener('submit', (event) => {
+                event.preventDefault(); 
+                actions.onSubmit(); 
+            });
+        }
 		this.valid = false;
 	}
 

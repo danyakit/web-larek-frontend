@@ -1,3 +1,5 @@
+import { Url } from "../../types";
+
 export type ApiListResponse<Type> = {
     total: number,
     items: Type[]
@@ -6,11 +8,15 @@ export type ApiListResponse<Type> = {
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 export class Api {
-    readonly baseUrl: string;
+    protected readonly baseUrl: string;
     protected options: RequestInit;
 
-    constructor(baseUrl: string, options: RequestInit = {}) {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl: Url, options: RequestInit = {}) {
+        if (typeof baseUrl === 'string') {
+            this.baseUrl = baseUrl;
+        } else {
+            this.baseUrl = baseUrl.items; 
+        }
         this.options = {
             headers: {
                 'Content-Type': 'application/json',
@@ -25,18 +31,29 @@ export class Api {
             .then(data => Promise.reject(data.error ?? response.statusText));
     }
 
-    get(uri: string) {
-        return fetch(this.baseUrl + uri, {
-            ...this.options,
-            method: 'GET'
-        }).then(this.handleResponse);
-    }
-
-    post(uri: string, data: object, method: ApiPostMethods = 'POST') {
-        return fetch(this.baseUrl + uri, {
+    protected _request(uri: string, method: string, data?: object) {
+        const requestOptions: RequestInit = {
             ...this.options,
             method,
-            body: JSON.stringify(data)
-        }).then(this.handleResponse);
+            body: data ? JSON.stringify(data) : undefined
+        };
+        return fetch(this.baseUrl + uri, requestOptions)
+            .then(this.handleResponse);
+    }
+
+    get(uri: string) {
+        return this._request(uri, 'GET');
+    }
+
+    post(uri: string, data: object) {
+        return this._request(uri, 'POST', data);
+    }
+
+    put(uri: string, data: object) {
+        return this._request(uri, 'PUT', data);
+    }
+
+    delete(uri: string) {
+        return this._request(uri, 'DELETE');
     }
 }

@@ -101,14 +101,18 @@ export class AppState implements IAppState {
 
 	isContactsValid(): boolean {
 		const errors: typeof this.formErrors = {};
-		if (!this.contactsState.email) {
-			errors.email = 'Необходимо указать почту';
+		
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!this.contactsState.email || !emailRegex.test(this.contactsState.email)) {
+			errors.email = 'Введите корректный email адрес';
 		}
-		if (!this.contactsState.phone) {
-			errors.phone = 'Необходимо указать телефон';
+	
+		const phoneRegex = /^\+?[0-9]{1,3}[\s\-]?(\([0-9]+\)|[0-9]+)[\s\-]?[0-9]+[\s\-]?[0-9]+$/;
+		if (!this.contactsState.phone || !phoneRegex.test(this.contactsState.phone)) {
+			errors.phone = 'Введите корректный номер телефона';
 		}
+	
 		this.formErrors = errors;
-
 		this.events.emit('contactsErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
 	}

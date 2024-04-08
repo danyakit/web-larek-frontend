@@ -87,26 +87,28 @@ export class Card extends Component<TCard> implements ICardView {
 		this.setDescription(this._description, value);
 	}
 
-	protected setImage(element: HTMLImageElement, src: string, alt?: string) {
-		if (element) {
-			element.src = src;
-			if (alt) element.alt = alt;
-		}
-	}
+	protected setImage(imageElement: HTMLImageElement, src: string, alt?: string) {
+		imageElement.src = src;
+		if (alt) imageElement.alt = alt;
+	}		
 
 	protected setPrice(element: HTMLSpanElement, value: unknown) {
-		if (element) element.textContent = String(value);
+		this.setText(element, value);
 	}
 
 	protected setCategory(element: HTMLSpanElement, value: unknown) {
-		if (element) element.textContent = String(value);
+		this.setText(element, value);
 	}
 
 	protected setDescription(element: HTMLSpanElement, value: unknown) {
-		if (element) element.textContent = String(value);
+		this.setText(element, value);
 	}
 
 	setCategoryCard(value: string) {
-		this.addStyleClass(this._category, Category.get(value));
+		this.toggleClass(this._category, Category.get(value));
 	}
+
+	toggleButton(disabled: boolean) {
+        this.setDisabled(this._button, disabled);
+    }
 }

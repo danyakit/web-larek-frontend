@@ -9,10 +9,10 @@ import { ensureElement, cloneTemplate } from './utils/utils';
 import { ICatalogItem, ICardItem, TUpdateCounter } from './types';
 import { Card as CatalogItem, Card as CartItem } from './components/Card';
 import { Modal } from './components/common/Modal';
-import { Basket } from './components/common/Basket';
-import { Order } from './components/Order';
-import { Tabs } from './components/common/Tabs';
-import { Success } from './components/common/Success';
+import { Basket } from './components/Basket';
+import { OrderForm } from './components/OrderForm';
+import { ContactsForm } from './components/ContactsForm';
+import { Success } from './components/Success';
 
 const events = new EventEmitter();
 const api = new LarekAPI({ items, images });
@@ -40,6 +40,12 @@ events.on('items:changed', () => {
 		const card = new CatalogItem(cloneTemplate(cardCatalogTemplate), {
 			onClick: () => events.emit('preview:changed', item),
 		});
+
+		if (item.status) {
+            card.setDisabled(card.button, true);
+            card.setText(card.button, 'Нельзя купить');
+        }
+
 		card.setCategoryCard(item.category);
 		return card.render({
 			title: item.title,
@@ -54,7 +60,7 @@ events.on('preview:changed', (item: ICatalogItem) => {
 	const card = new CatalogItem(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => events.emit('cart:changed', item),
 	});
-	card.button.disabled = item.status;
+	card.toggleButton(item.status);
 	card.setCategoryCard(item.category);
 	modal.render({
 		content: card.render({
@@ -100,7 +106,7 @@ events.on('card:remove', (item: ICardItem) => {
 	appData.setCartPreview();
 });
 
-const order = new Order(cloneTemplate(orderTemplate), events, {
+const order = new OrderForm(cloneTemplate(orderTemplate), events, {
 	onClickPayment: (event: Event) => {
 		const paymentType = (event.target as HTMLElement).getAttribute('name');
 		appData.setPaymentType(paymentType);
@@ -145,22 +151,23 @@ events.on('order:submit', () => {
 	});
 });
 
-const contacts = new Tabs(cloneTemplate(contactsTemplate), events, {
-	onClick: () => {
-		appData.createOrder();
-		api
-			.orderItems(appData.order)
-			.then((response) => {
-				console.log(response);
-				appData.clearAllItems();
-				events.emit('success');
-			})
-			.catch((error) => {
-				events.emit('cart:open');
-				console.error(error);
-			});
-	},
+const contacts = new ContactsForm(cloneTemplate(contactsTemplate), events, {
+    onSubmit: () => {
+        appData.createOrder();
+        api
+            .orderItems(appData.order)
+            .then((response) => {
+                console.log(response);
+                appData.clearAllItems();
+                events.emit('success');
+            })
+            .catch((error) => {
+                events.emit('cart:open');
+                console.error(error);
+            });
+    },
 });
+
 
 events.on(/^contacts\..*:change/, () => {
 	appData.setPhone(contacts.phone);
