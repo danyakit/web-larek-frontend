@@ -1,6 +1,6 @@
 import { Component } from './base/Component';
 import { ensureElement } from '../utils/utils';
-import { TCardActions, ICardView, TCard, Category } from '../types';
+import { TCardActions, ICardView, TCard, Category, ICardItem, ICatalogItem } from '../types';
 
 export class Card extends Component<TCard> implements ICardView {
 	protected _title: HTMLElement;
@@ -10,6 +10,7 @@ export class Card extends Component<TCard> implements ICardView {
 	protected _description?: HTMLParagraphElement;
 	protected _button?: HTMLButtonElement;
 	protected _statusBtn: boolean;
+	textContent: string;
 
 	constructor(
 		container: HTMLElement,
@@ -35,9 +36,22 @@ export class Card extends Component<TCard> implements ICardView {
 			} else {
 				container.addEventListener('click', actions.onClick);
 			}
-			if (this.statusBtn) this.setDisabled(this._button, this._statusBtn);
-		}
+		}	
 	}
+
+	render(data: ICardItem) {
+        super.render(data);
+        this.setCategoryCard(data.category);
+        if (data.price === null) {
+            this.statusBtn = true; 
+            this.setDisabled(this._button, true); 
+            this.setText(this._button, 'Нельзя купить'); 
+        } else {
+            this.statusBtn = false;
+            this.setText(this._price, `${data.price} синапсов`);
+        }
+        return this.container;
+    }
 
 	get button(): HTMLButtonElement {
 		return this._button;
@@ -80,7 +94,7 @@ export class Card extends Component<TCard> implements ICardView {
 	}
 
 	get description(): string {
-		return this._category.textContent || '';
+		return this._category.textContent || 'нельзя купить';
 	}
 
 	set description(value: string) {
@@ -88,8 +102,10 @@ export class Card extends Component<TCard> implements ICardView {
 	}
 
 	protected setImage(imageElement: HTMLImageElement, src: string, alt?: string) {
+		if (this._image) {
 		imageElement.src = src;
 		if (alt) imageElement.alt = alt;
+		}
 	}		
 
 	protected setPrice(element: HTMLSpanElement, value: unknown) {
@@ -105,7 +121,7 @@ export class Card extends Component<TCard> implements ICardView {
 	}
 
 	setCategoryCard(value: string) {
-		this.toggleClass(this._category, Category.get(value));
+		this.toggleClass(this._category, Category.get(value), true);
 	}
 
 	toggleButton(disabled: boolean) {

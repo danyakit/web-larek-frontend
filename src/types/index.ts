@@ -14,13 +14,19 @@ export interface ICatalogItem {
   category: string;
   price: number | null;
   status: boolean;
+  statusBtn: boolean;
+  
 }
 
 export interface ICardItem {
+	category: string;
 	id: string;
 	title: string;
 	price: number | null;
 	status: boolean;
+	image: string;
+	description: string;
+	statusBtn: boolean;
 }
 
 export interface ICardList {

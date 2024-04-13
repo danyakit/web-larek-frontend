@@ -12,9 +12,16 @@ export abstract class Component<T> {
 		}
 	}
 
-    toggleClass(element: HTMLElement, className: string, force?: boolean) {
-        element.classList.toggle(className, force);
-    }
+	protected toggleClass(element: HTMLElement | null, className: string, condition: boolean) {
+		if (element) {
+			if (condition) {
+				element.classList.add(className);
+			} else {
+				element.classList.remove(className);
+			}
+		}
+	}
+	
 
 	protected setImage(element: HTMLImageElement, src: string, alt?: string) {
         if (element) {

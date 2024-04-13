@@ -27,12 +27,12 @@ export class Modal extends Component<TModalData> implements IModalView {
 	}
 
 	open() {
-		this.toggleClass(this.container, 'modal_active');
+		this.container.classList.add('modal_active');
 		this.events.emit('modal:open');
 	}
 
 	close() {
-		this.toggleClass(this.container, 'modal_active');
+		this.container.classList.remove('modal_active');
 		this.content = null;
 		this.events.emit('modal:close');
 	}

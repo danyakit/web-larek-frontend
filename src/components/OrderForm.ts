@@ -40,9 +40,9 @@ export class OrderForm extends Form<TOrderForm> implements IOrderView {
 
 	setStyleBorder(paymentType: string) {
 		this._paymentTypes.forEach((button) =>
-			this.toggleClass(button, 'button_alt-active')
+			this.toggleClass(button, 'button_alt-active', false)
 		);
-		this.toggleClass(this.container[paymentType], 'button_alt-active');
+		this.toggleClass(this.container[paymentType], 'button_alt-active', true);
 	}
 }
 

@@ -43,6 +43,7 @@ export class AppState implements IAppState {
 		this.events.emit('cart:updateCounter', {
 			count: this.cartState.size,
 		});
+		
 	}
 
 	setCartPreview() {
@@ -156,6 +157,8 @@ export class CatalogItem extends Model<ICatalogItem> {
 	category: string;
 	price: number | null;
 	status: boolean;
+	statusBtn: boolean; 
+
 }
 
 export class CartList extends Model<ICardItem> {

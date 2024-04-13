@@ -52,6 +52,10 @@ events.on('items:changed', () => {
 			image: item.image,
 			price: item.price,
 			category: item.category,
+			id: '',
+			status: false,
+			description: '',
+			statusBtn: false
 		});
 	});
 });
@@ -70,6 +74,8 @@ events.on('preview:changed', (item: ICatalogItem) => {
 			price: item.price,
 			description: item.description,
 			statusBtn: item.status,
+			id: '',
+			status: false
 		}),
 	});
 });
@@ -88,6 +94,12 @@ events.on('cart:preview', (cartState: TUpdateCounter) => {
 		return cartItem.render({
 			title: item.title,
 			price: item.price,
+			category: '',
+			id: '',
+			status: false,
+			image: '',
+			description: '',
+			statusBtn: false
 		});
 	});
 	basket.setOrderButton(cartState.count);
@@ -98,7 +110,7 @@ events.on('cart:changed', (item: ICatalogItem) => {
 	if (!item.status) {
 		appData.addItemCart(item);
 		modal.toggleCartBtn(item.status);
-	}
+	} 
 });
 
 events.on('card:remove', (item: ICardItem) => {
